@@ -39,6 +39,15 @@ struct DashboardView: View {
                     habitId: habitId,
                     isPresented: $showingPhotoCapture
                 )
+            } else {
+                // Fallback view if habitId is nil
+                Text("Loading...")
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(Color(.systemBackground))
+                    .onAppear {
+                        // Close the sheet if no habit is selected
+                        showingPhotoCapture = false
+                    }
             }
         }
     }
@@ -147,8 +156,11 @@ struct DashboardView: View {
                     HabitCard(
                         habit: habit,
                         onCompleteHabit: {
+                            // Ensure state is set properly before showing sheet
                             selectedHabitId = habit.id
-                            showingPhotoCapture = true
+                            DispatchQueue.main.async {
+                                showingPhotoCapture = true
+                            }
                         }
                     )
                 }
