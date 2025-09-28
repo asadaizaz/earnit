@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Earn It needs camera access to let you take photos as proof of completing your daily habits.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Earn It needs photo library access to let you select photos as proof of completing your daily habits.</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.earnit.app.urlscheme</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>earnit</string>
+			</array>
+		</dict>
+	</array>
+</dict>
+</plist> 

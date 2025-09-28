@@ -30,6 +30,28 @@ class ScreenTimeManager: ObservableObject {
         checkAuthorizationStatus()
     }
     
+    // MARK: - Device Activity Constants
+    private static let activityName = DeviceActivityName("earnit.monitoring")
+    private static let eventName = DeviceActivityEvent.Name("earnit.app.access")
+    
+    // MARK: - Device Activity Helper Methods
+    private func createSchedule() -> DeviceActivitySchedule {
+        return DeviceActivitySchedule(
+            intervalStart: DateComponents(hour: 0, minute: 0),
+            intervalEnd: DateComponents(hour: 23, minute: 59),
+            repeats: true
+        )
+    }
+    
+    private func createEvent(for selection: FamilyActivitySelection) -> DeviceActivityEvent {
+        return DeviceActivityEvent(
+            applications: selection.applicationTokens,
+            categories: selection.categoryTokens,
+            webDomains: selection.webDomainTokens,
+            threshold: DateComponents(second: 0) // Trigger immediately on access
+        )
+    }
+    
     private func setupBlockingObserver() {
         // Monitor app state changes
         NotificationCenter.default.addObserver(
@@ -134,13 +156,13 @@ class ScreenTimeManager: ObservableObject {
         }
         
         do {
-            let schedule = EarnitDeviceActivityMonitor.createSchedule()
-            let event = EarnitDeviceActivityMonitor.createEvent(for: selection)
+            let schedule = createSchedule()
+            let event = createEvent(for: selection)
             
             try center.startMonitoring(
-                EarnitDeviceActivityMonitor.activityName,
+                Self.activityName,
                 during: schedule,
-                events: [EarnitDeviceActivityMonitor.eventName: event]
+                events: [Self.eventName: event]
             )
             
             print("Started device activity monitoring")

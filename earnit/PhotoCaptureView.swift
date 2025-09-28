@@ -25,6 +25,13 @@ struct PhotoCaptureView: View {
     var body: some View {
         NavigationView {
             VStack(spacing: 24) {
+                // Debug: Show habit info
+                if habit == nil {
+                    Text("⚠️ No habit found for ID: \(habitId)")
+                        .foregroundColor(.red)
+                        .padding()
+                }
+                
                 // Header
                 VStack(spacing: 8) {
                     Image(systemName: "camera.circle.fill")

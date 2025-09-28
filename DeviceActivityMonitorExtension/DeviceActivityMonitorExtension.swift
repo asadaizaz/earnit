@@ -1,8 +1,8 @@
 //
 //  DeviceActivityMonitorExtension.swift
-//  earnit
+//  DeviceActivityMonitorExtension
 //
-//  Created by AI Assistant on 2025-07-25.
+//  Created by Kiro on 2025-09-28.
 //
 
 import DeviceActivity
@@ -10,9 +10,6 @@ import Foundation
 import FamilyControls
 
 // MARK: - Device Activity Monitor Extension
-// Note: This would normally be in a separate extension target
-// For MVP, this shows the structure needed for the background monitoring
-
 class EarnitDeviceActivityMonitor: DeviceActivityMonitor {
     
     override func intervalDidStart(for activity: DeviceActivityName) {
@@ -39,7 +36,7 @@ class EarnitDeviceActivityMonitor: DeviceActivityMonitor {
         // Check if habits are completed
         let sharedDefaults = UserDefaults(suiteName: "group.com.earnit.app") ?? UserDefaults.standard
         let allHabitsCompleted = sharedDefaults.bool(forKey: "AllHabitsCompleted")
-        
+            
         if !allHabitsCompleted {
             // User tried to access blocked app but hasn't completed habits
             // The shield will be shown automatically by the system
@@ -97,4 +94,4 @@ extension EarnitDeviceActivityMonitor {
             threshold: DateComponents(second: 0) // Trigger immediately on access
         )
     }
-} 
+}
