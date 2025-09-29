@@ -19,13 +19,24 @@ class ScreenTimeManager: ObservableObject {
     
     private let appState: AppStateManager
     private let store = ManagedSettingsStore()
+    
+    // Configure shield settings to use our custom extension
+    private func configureShieldSettings() {
+        // This ensures our shield configuration extension is used
+        store.shield.applicationCategories = .none
+        store.shield.applications = Set<ApplicationToken>()
+        store.shield.webDomains = Set<WebDomainToken>()
+        
+        print("🛡️ Configured shield settings for store: \(store)")
+    }
     private let center = DeviceActivityCenter()
     
     // App Group UserDefaults for sharing with extensions
-    private let sharedDefaults = UserDefaults(suiteName: "group.com.earnit.app") ?? UserDefaults.standard
+    private let sharedDefaults = UserDefaults(suiteName: "group.com.asad.earnit") ?? UserDefaults.standard
     
     init(appState: AppStateManager) {
         self.appState = appState
+        configureShieldSettings()
         setupBlockingObserver()
         checkAuthorizationStatus()
     }
@@ -136,15 +147,20 @@ class ScreenTimeManager: ObservableObject {
                 if !selection.webDomainTokens.isEmpty {
                     store.shield.webDomains = selection.webDomainTokens
                 }
+                
+                print("🛡️ Applied shields to \(selection.applicationTokens.count) apps")
             } else {
                 // Unblock all apps
                 store.clearAllSettings()
+                print("🛡️ Cleared all shields")
             }
         }
         
         // Update shared defaults for extensions
         sharedDefaults.set(isBlockingActive, forKey: "IsBlocking")
         sharedDefaults.set(allHabitsCompleted, forKey: "AllHabitsCompleted")
+        
+        print("🛡️ Updated shared defaults - Blocking: \(isBlockingActive), Habits completed: \(allHabitsCompleted)")
     }
     
     // MARK: - Device Activity Monitoring
@@ -184,6 +200,8 @@ class ScreenTimeManager: ObservableObject {
     
     @objc private func appWillEnterForeground() {
         checkBlockingStatus()
+        // Force update shields when app comes to foreground
+        updateAppBlocking()
     }
     
     private func checkBlockingStatus() {
@@ -226,6 +244,8 @@ class ScreenTimeManager: ObservableObject {
         // For MVP, this is just a placeholder for the concept
         print("Redirecting to Earn It app...")
     }
+    
+
     
     deinit {
         NotificationCenter.default.removeObserver(self)

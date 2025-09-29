@@ -8,15 +8,23 @@
 import DeviceActivity
 import Foundation
 import FamilyControls
+import os
 
 // MARK: - Device Activity Monitor Extension
 class EarnitDeviceActivityMonitor: DeviceActivityMonitor {
+    let monitorLog = Logger(subsystem: "com.asad.earnit", category: "DeviceActivity")
+
+    override init() {
+        super.init()
+        monitorLog.log("🛡️ DeviceActivityMonitorExtension INITIALIZED!")
+        NSLog("🛡️ DeviceActivityMonitorExtension INITIALIZED!")
+    }
     
     override func intervalDidStart(for activity: DeviceActivityName) {
         super.intervalDidStart(for: activity)
         
         // Called when monitoring begins
-        print("Device activity monitoring started for: \(activity)")
+        monitorLog.log("Device activity monitoring started for")
         updateSharedState()
     }
     
@@ -31,19 +39,23 @@ class EarnitDeviceActivityMonitor: DeviceActivityMonitor {
         super.eventDidReachThreshold(event, activity: activity)
         
         // Called when user tries to access a blocked app
-        print("Event reached threshold: \(event) for activity: \(activity)")
+        monitorLog.log("🛡️ Event reached threshold")
+        print("🛡️ Event reached threshold: \(event) for activity: \(activity)")
+        NSLog("🛡️ Event reached threshold: \(event) for activity: \(activity)")
         
         // Check if habits are completed
-        let sharedDefaults = UserDefaults(suiteName: "group.com.earnit.app") ?? UserDefaults.standard
+        let sharedDefaults = UserDefaults(suiteName: "group.com.asad.earnit") ?? UserDefaults.standard
         let allHabitsCompleted = sharedDefaults.bool(forKey: "AllHabitsCompleted")
-            
+        
         if !allHabitsCompleted {
             // User tried to access blocked app but hasn't completed habits
             // The shield will be shown automatically by the system
-            print("Blocking app access - habits not completed")
+            print("🛡️ Blocking app access - habits not completed")
+            NSLog("🛡️ Blocking app access - habits not completed")
         } else {
             // All habits completed, allow access
-            print("Allowing app access - all habits completed")
+            print("🛡️ Allowing app access - all habits completed")
+            NSLog("🛡️ Allowing app access - all habits completed")
         }
     }
     
@@ -63,7 +75,7 @@ class EarnitDeviceActivityMonitor: DeviceActivityMonitor {
     
     private func updateSharedState() {
         // Update shared preferences for shield extensions
-        let sharedDefaults = UserDefaults(suiteName: "group.com.earnit.app") ?? UserDefaults.standard
+        let sharedDefaults = UserDefaults(suiteName: "group.com.asad.earnit") ?? UserDefaults.standard
         sharedDefaults.set(Date(), forKey: "LastMonitoringUpdate")
     }
 }

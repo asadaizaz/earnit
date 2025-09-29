@@ -50,6 +50,7 @@ struct DashboardView: View {
                     }
             }
         }
+
     }
     
     private var mainDashboardView: some View {
@@ -228,6 +229,8 @@ struct DashboardView: View {
     private var completedHabitsCount: Int {
         appState.habits.filter { $0.isCompletedToday }.count
     }
+    
+
 }
 
 // MARK: - Habit Card

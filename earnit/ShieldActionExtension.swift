@@ -32,7 +32,7 @@ class EarnitShieldActionDelegate: ShieldActionDelegate {
 
     // Shared processing logic
     private func process(_ action: ShieldAction, completionHandler: @escaping (ShieldActionResponse) -> Void) {
-        let defaults = UserDefaults(suiteName: "group.com.earnit.app") ?? .standard
+        let defaults = UserDefaults(suiteName: "group.com.asad.earnit") ?? .standard
         let habitsCompleted = defaults.bool(forKey: "AllHabitsCompleted")
 
         switch action {
@@ -61,7 +61,7 @@ class EarnitShieldActionDelegate: ShieldActionDelegate {
 extension EarnitShieldActionDelegate {
     /// Check if habits are completed from shared storage
     func areHabitsCompleted() -> Bool {
-        let sharedDefaults = UserDefaults(suiteName: "group.com.earnit.app") ?? UserDefaults.standard
+        let sharedDefaults = UserDefaults(suiteName: "group.com.asad.earnit") ?? UserDefaults.standard
         return sharedDefaults.bool(forKey: "AllHabitsCompleted")
     }
 }
